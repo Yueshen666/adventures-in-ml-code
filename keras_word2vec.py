@@ -95,7 +95,9 @@ context = embedding(input_context)
 context = Reshape((vector_dim, 1))(context)
 
 # setup a cosine similarity operation which will be output in a secondary model
-similarity = merge([target, context], mode='cos', dot_axes=0)
+# similarity = merge([target, context], mode='cos', dot_axes=0)
+# keras.layer.merge removed after 02/2017, use keras.layer.dot instead.
+similarity = dot([target, context], axes=0,normalize=True)
 
 # now perform the dot product operation to get a similarity measure
 dot_product = merge([target, context], mode='dot', dot_axes=1)
